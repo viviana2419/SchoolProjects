@@ -47,3 +47,22 @@ SELECT *
   join SQLTutorial.dbo.EmployeeSalary
   on EmployeeDemographics.EmployeeID=EmployeeSalary.EmployeeID
  
+ --1.29 Having clause
+ SELECT JobTitle,avg(Salary)
+  FROM [SQLTutorial].[dbo].[EmployeeDemographics]
+  join SQLTutorial.dbo.EmployeeSalary
+  on EmployeeDemographics.EmployeeID=EmployeeSalary.EmployeeID
+  group by JobTitle
+  having avg(Salary)>45000
+  order by avg(Salary)
+
+  --1.29 updating/deleting data
+  SELECT *
+  FROM [SQLTutorial].[dbo].[EmployeeDemographics]
+
+  update SQLTutorial.dbo.EmployeeDemographics
+  set Age=31
+  where FirstName='Toby' and LastName='Flenderson'
+
+  delete from SQLTutorial.dbo.EmployeeDemographics
+  where EmployeeID =1009
