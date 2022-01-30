@@ -66,3 +66,24 @@ SELECT *
 
   delete from SQLTutorial.dbo.EmployeeDemographics
   where EmployeeID =1009
+
+  --1.30 Aliasing
+  SELECT FirstName +' '+LastName as FullName
+  FROM [SQLTutorial].[dbo].[EmployeeDemographics]
+
+  SELECT demo.EmployeeID
+  FROM [SQLTutorial].[dbo].[EmployeeDemographics] as demo
+  join SQLTutorial.dbo.EmployeeSalary as sal
+  on demo.EmployeeID=sal.EmployeeID
+
+  --1.30 partition by compare to group by
+  SELECT FirstName, LastName, Gender, Salary, count(Gender) over(partition by Gender) as TotalGender
+  FROM [SQLTutorial].[dbo].[EmployeeDemographics] as demo
+  join SQLTutorial.dbo.EmployeeSalary as sal
+	on demo.EmployeeID=sal.EmployeeID
+
+SELECT  Gender, count(Gender) 
+  FROM [SQLTutorial].[dbo].[EmployeeDemographics] as demo
+  join SQLTutorial.dbo.EmployeeSalary as sal
+	on demo.EmployeeID=sal.EmployeeID
+  group by Gender
