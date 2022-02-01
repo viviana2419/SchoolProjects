@@ -87,3 +87,46 @@ SELECT  Gender, count(Gender)
   join SQLTutorial.dbo.EmployeeSalary as sal
 	on demo.EmployeeID=sal.EmployeeID
   group by Gender
+
+  --2.1 SQL Advance CTEs
+  with CTE_Employee as
+  (SELECT FirstName, LastName, Gender, Salary, count(Gender) over(partition by Gender) as TotalGender
+  FROM [SQLTutorial].[dbo].[EmployeeDemographics] as demo
+  join SQLTutorial.dbo.EmployeeSalary as sal
+	on demo.EmployeeID=sal.EmployeeID
+	where Salary>'45000')
+
+	select FirstName
+	from CTE_Employee
+--2.1 TEMP Tables
+create table #temp_employee(
+EmployeeID int,
+JobTitle varchar(100),
+Salary int
+)
+
+select*
+from #temp_employee
+
+insert into #temp_employee values(
+'1001','hr','45000')
+insert into #temp_employee
+select*
+from SQLTutorial.dbo.EmployeeSalary
+
+drop table if exists #temp_employee2
+create table #temp_employee2 (
+JobTitle varchar(50),
+EmployeesPerJob int,
+AvgAge int,
+AvgSalary int)
+
+insert into #temp_employee2
+SELECT JobTitle, COUNT(JobTitle),AVG(age),AVG(salary)
+  FROM [SQLTutorial].[dbo].[EmployeeDemographics] as demo
+  join SQLTutorial.dbo.EmployeeSalary as sal
+	on demo.EmployeeID=sal.EmployeeID
+	group by JobTitle
+
+select *
+from #temp_employee2
