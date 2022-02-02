@@ -130,3 +130,46 @@ SELECT JobTitle, COUNT(JobTitle),AVG(age),AVG(salary)
 
 select *
 from #temp_employee2
+
+--2.2: String Functions - TRIM, LTRIM, RTRIM, Replace, Substring, Upper, Lower
+
+
+CREATE TABLE EmployeeErrors (
+EmployeeID varchar(50)
+,FirstName varchar(50)
+,LastName varchar(50)
+)
+
+insert into EmployeeErrors Values 
+('1001  ', 'Jimbo', 'Halbert')
+,('  1002', 'Pamela', 'Beasely')
+,('1005', 'TOby', 'Flenderson - Fired')
+
+Select *
+From EmployeeErrors
+
+-- Using Trim, LTRIM, RTRIM
+select EmployeeID,TRIM(employeeID) as IDTRIM
+from EmployeeErrors
+select EmployeeID,LTRIM(employeeID) as IDTRIM
+from EmployeeErrors
+select EmployeeID,RTRIM(employeeID) as IDTRIM
+from EmployeeErrors
+
+--Using replace
+select LastName, REPLACE(lastname,'- Fired','') as LastNameFixed
+from EmployeeErrors
+
+--using substring
+Select Substring(err.FirstName,1,3), Substring(dem.FirstName,1,3), Substring(err.LastName,1,3), Substring(dem.LastName,1,3)
+FROM EmployeeErrors err
+JOIN SQLTutorial.dbo.EmployeeDemographics dem
+	on Substring(err.FirstName,1,3) = Substring(dem.FirstName,1,3)
+	and Substring(err.LastName,1,3) = Substring(dem.LastName,1,3)
+
+--using upper and lower
+Select firstname, LOWER(firstname)
+from EmployeeErrors
+
+Select Firstname, UPPER(FirstName)
+from EmployeeErrors
