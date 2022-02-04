@@ -173,3 +173,46 @@ from EmployeeErrors
 
 Select Firstname, UPPER(FirstName)
 from EmployeeErrors
+
+--2.3 stored procedures£ºsimilar to functions, set parameters and everyone could use it to get updated desired result
+create procedure test 
+as
+select*
+from SQLTutorial.dbo.EmployeeDemographics 
+
+CREATE PROCEDURE Temp_Employee
+AS
+DROP TABLE IF EXISTS #temp_employee
+Create table #temp_employee (
+JobTitle varchar(100),
+EmployeesPerJob int ,
+AvgAge int,
+AvgSalary int
+)
+
+
+Insert into #temp_employee
+SELECT JobTitle, Count(JobTitle), Avg(Age), AVG(salary)
+FROM SQLTutorial.dbo.EmployeeDemographics  emp
+JOIN SQLTutorial.dbo.EmployeeSalary  sal
+	ON emp.EmployeeID = sal.EmployeeID
+group by JobTitle
+
+Select * 
+From #temp_employee
+GO;
+exec Temp_Employee
+
+--2.4 subquery
+select EmployeeID,Salary,(select AVG(salary) from SQLTutorial.dbo.EmployeeSalary) as AllAvgSalary
+from SQLTutorial.dbo.EmployeeSalary
+--subquery in from
+select a.employeeID, AllAvgSalary
+from (select EmployeeID,Salary,AVG(salary) over() as AllAvgSalary from SQLTutorial.dbo.EmployeeSalary) a
+--subquery in where
+select EmployeeID,Salary,JobTitle
+from SQLTutorial.dbo.EmployeeSalary
+where EmployeeID in (
+	select EmployeeID
+	from SQLTutorial.dbo.EmployeeDemographics
+	where age>30)
